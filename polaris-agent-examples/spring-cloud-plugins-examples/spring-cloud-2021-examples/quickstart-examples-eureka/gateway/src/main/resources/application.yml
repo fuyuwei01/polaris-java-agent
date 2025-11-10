@@ -1,0 +1,41 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: eureka-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true  # 启用服务发现定位器
+          lower-case-service-id: true
+      routes:
+        # 路由到provider服务
+        - id: provider-route
+          uri: lb://eureka-provider
+          predicates:
+            - Path=/provider/**
+          filters:
+            - StripPrefix=1
+        # 路由到consumer服务
+        - id: consumer-route
+          uri: lb://eureka-consumer
+          predicates:
+            - Path=/consumer/**
+          filters:
+            - StripPrefix=1
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${server.port}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,gateway

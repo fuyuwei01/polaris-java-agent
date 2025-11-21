@@ -9,7 +9,7 @@ public class HelloController {
 
     @GetMapping("/hello/{name}")
     public String hello(@PathVariable String name) {
-        return "Hello " + name + " from provider! (Eureka)";
+        return "Hello " + name + " from provider! Port:" + System.getProperty("server.port");
     }
 
     @GetMapping("/health")

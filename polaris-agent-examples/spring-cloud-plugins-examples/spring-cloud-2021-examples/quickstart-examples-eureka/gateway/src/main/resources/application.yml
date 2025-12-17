@@ -6,6 +6,9 @@ spring:
     name: eureka-gateway
   cloud:
     gateway:
+      httpclient:
+        pool:
+          max-connections: 2000
       discovery:
         locator:
           enabled: true  # 启用服务发现定位器
